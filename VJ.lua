@@ -31,6 +31,7 @@ MIDIKEY_FlipNdiL_AddNdiL = {176,37}
 MIDIKEY_MSKTYP_JITOME = {176,68}
 MIDIKEY_MSKTYP_CLIP = {176,52}
 MIDIKEY_MSKTYP_CAM = {176,36}
+MIDIKEY_MSKTYP_CAM2 = {176,35}
 MIDIKEY_MSKGAIN_L = {176,19}
 MIDIKEY_MSKGAIN_R = {176,20}
 
@@ -111,6 +112,8 @@ function onReceiveMIDI(message, connections)
 	  MSKTYP_CLIP(recvMIDI_value)
   elseif ( (MIDIKEY_MSKTYP_CAM[1] == message[1]) and (MIDIKEY_MSKTYP_CAM[2] == message[2])) then
 	  MSKTYP_CAM(recvMIDI_value)
+  elseif ( (MIDIKEY_MSKTYP_CAM2[1] == message[1]) and (MIDIKEY_MSKTYP_CAM2[2] == message[2])) then
+	  MSKTYP_CAM2(recvMIDI_value)
   elseif ( (MIDIKEY_MSKGAIN_L[1] == message[1]) and (MIDIKEY_MSKGAIN_L[2] == message[2])) then
 	  MSKGAIN_L(recvMIDI_value)
   elseif ( (MIDIKEY_MSKGAIN_R[1] == message[1]) and (MIDIKEY_MSKGAIN_R[2] == message[2])) then
@@ -140,6 +143,16 @@ function MSKGAIN_L(data)
 	if 0 < data then
 		gain = data / 127
 		sendOSC({'/composition/layers/62/video/opacity', {{tag = 'f', value = gain}}}, OSC_Connection_RSL)
+	else
+		--
+	end
+end
+
+
+function MSKTYP_CAM2(data)
+	print('MSKTYP_CAM2(', data, ')')
+	if 0 < data then
+		sendOSC({'/composition/layers/52/clips/5/connect', {{tag = 'i', value = 1}}}, OSC_Connection_RSL)
 	else
 		--
 	end
@@ -356,8 +369,9 @@ end
 function JITOME(data)
 	print('JITOME(', data, ')')
 	if 0 < data then
-		sendOSC({'/composition/columns/4/connect', {{tag = 'i', value = 1}}}, OSC_Connection_RSL)
+		sendOSC({'/composition/columns/1/connect', {{tag = 'i', value = 1}}}, OSC_Connection_RSL)
 		sendOSC('/composition/layers/1/select', OSC_Connection_RSL)
+		sendOSC({'/composition/layers/1/clips/4/connect', {{tag = 'i', value = 1}}}, OSC_Connection_RSL)
 		sendOSC({'/composition/layers/2/bypassed', {{tag = 'i', value = 0}}}, OSC_Connection_RSL)
 		sendOSC({'/composition/layers/2/clips/5/connect', {{tag = 'i', value = 1}}}, OSC_Connection_RSL)
 		sendOSC({'/composition/layers/3/bypassed', {{tag = 'i', value = 0}}}, OSC_Connection_RSL)
@@ -417,8 +431,9 @@ end
 function VDJMST_INIT(data)
 	print('VDJMST(', data, ')')
 	if 0 < data then
-		sendOSC({'/composition/columns/4/connect', {{tag = 'i', value = 1}}}, OSC_Connection_RSL)
+		sendOSC({'/composition/columns/1/connect', {{tag = 'i', value = 1}}}, OSC_Connection_RSL)
 		sendOSC('/composition/layers/1/select', OSC_Connection_RSL)
+		sendOSC({'/composition/layers/1/clips/4/connect', {{tag = 'i', value = 1}}}, OSC_Connection_RSL)
 		sendOSC({'/composition/layers/2/bypassed', {{tag = 'i', value = 0}}}, OSC_Connection_RSL)
 		sendOSC({'/composition/layers/2/clips/5/connect', {{tag = 'i', value = 1}}}, OSC_Connection_RSL)
 		sendOSC({'/composition/layers/3/bypassed', {{tag = 'i', value = 0}}}, OSC_Connection_RSL)
@@ -478,8 +493,9 @@ end
 function INIT(data)
 	print('INIT(', data, ')')
 	if 0 < data then
-		sendOSC({'/composition/columns/4/connect', {{tag = 'i', value = 1}}}, OSC_Connection_RSL)
+		sendOSC({'/composition/columns/1/connect', {{tag = 'i', value = 1}}}, OSC_Connection_RSL)
 		sendOSC('/composition/layers/1/select', OSC_Connection_RSL)
+		sendOSC({'/composition/layers/1/clips/4/connect', {{tag = 'i', value = 1}}}, OSC_Connection_RSL)
 		sendOSC({'/composition/layers/2/bypassed', {{tag = 'i', value = 0}}}, OSC_Connection_RSL)
 		sendOSC({'/composition/layers/2/clips/5/connect', {{tag = 'i', value = 1}}}, OSC_Connection_RSL)
 		sendOSC({'/composition/layers/3/bypassed', {{tag = 'i', value = 0}}}, OSC_Connection_RSL)
