@@ -32,6 +32,7 @@ MIDIKEY_MSKTYP_JITOME = {176,68}
 MIDIKEY_MSKTYP_CLIP = {176,52}
 MIDIKEY_MSKTYP_CAM = {176,36}
 MIDIKEY_MSKTYP_CAM2 = {176,35}
+MIDIKEY_MSKTYP_LOGO = {176,51}
 MIDIKEY_MSKGAIN_L = {176,19}
 MIDIKEY_MSKGAIN_R = {176,20}
 
@@ -114,6 +115,8 @@ function onReceiveMIDI(message, connections)
 	  MSKTYP_CAM(recvMIDI_value)
   elseif ( (MIDIKEY_MSKTYP_CAM2[1] == message[1]) and (MIDIKEY_MSKTYP_CAM2[2] == message[2])) then
 	  MSKTYP_CAM2(recvMIDI_value)
+  elseif ( (MIDIKEY_MSKTYP_LOGO[1] == message[1]) and (MIDIKEY_MSKTYP_LOGO[2] == message[2])) then
+	  MSKTYP_LOGO(recvMIDI_value)
   elseif ( (MIDIKEY_MSKGAIN_L[1] == message[1]) and (MIDIKEY_MSKGAIN_L[2] == message[2])) then
 	  MSKGAIN_L(recvMIDI_value)
   elseif ( (MIDIKEY_MSKGAIN_R[1] == message[1]) and (MIDIKEY_MSKGAIN_R[2] == message[2])) then
@@ -147,6 +150,18 @@ function MSKGAIN_L(data)
 		--
 	end
 end
+
+
+
+function MSKTYP_LOGO(data)
+	print('MSKTYP_LOGO(', data, ')')
+	if 0 < data then
+		sendOSC({'/composition/layers/52/clips/6/connect', {{tag = 'i', value = 1}}}, OSC_Connection_RSL)
+	else
+		--
+	end
+end
+
 
 
 function MSKTYP_CAM2(data)
