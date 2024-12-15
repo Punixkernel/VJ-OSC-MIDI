@@ -5,10 +5,14 @@ OSCPath_S2L_BPM = '/s2l/out/bpm'
 OSCPath_RSL_BPM = '/composition/tempocontroller/tempo'
 OSCPath_RSL_BPMTAP = '/composition/tempocontroller/tempotap'
 OSCPath_RSL_BPMRSYNC = '/composition/tempocontroller/resync'
+OSCPath_RSL_BPMDBL = '/composition/tempocontroller/tempo/multiply'
+OSCPath_RSL_BPMHLF = '/composition/tempocontroller/tempo/divide'
 
 MIDIKEY_AUTOBPM = {176, 42}
 MIDIKEY_BPMTAP = {176, 43}
 MIDIKEY_BPMRSYNC = {176, 44}
+MIDIKEY_BPMDBL = {176, 59}
+MIDIKEY_BPMHLF = {176, 58}
 
 MIDIKEY_INIT = {176,46}
 MIDIKEY_VDJMST_INIT = {176,60}
@@ -79,6 +83,10 @@ function onReceiveMIDI(message, connections)
     tapBPM(recvMIDI_value)
   elseif ( (MIDIKEY_BPMRSYNC[1] == message[1]) and (MIDIKEY_BPMRSYNC[2] == message[2])) then
     BPMRSYNC(recvMIDI_value)
+  elseif ( (MIDIKEY_BPMDBL[1] == message[1]) and (MIDIKEY_BPMDBL[2] == message[2])) then
+    BPMDBL(recvMIDI_value)
+  elseif ( (MIDIKEY_BPMHLF[1] == message[1]) and (MIDIKEY_BPMHLF[2] == message[2])) then
+    BPMHLF(recvMIDI_value)
 
   elseif ( (MIDIKEY_INIT[1] == message[1]) and (MIDIKEY_INIT[2] == message[2])) then
     INIT(recvMIDI_value)
@@ -659,6 +667,27 @@ function tapBPM(data)
     sendOSC({OSCPath_RSL_BPMTAP, {{tag = 'i', value = 0}}}, OSC_Connection_RSL)
   end
 end
+
+
+function BPMDBL(data)
+  print('tapBPM(', data, ')')
+  if 0 < data then
+    sendOSC({OSCPath_RSL_BPMDBL, {{tag = 'i', value = 1}}}, OSC_Connection_RSL)
+  else
+    sendOSC({OSCPath_RSL_BPMDBL, {{tag = 'i', value = 0}}}, OSC_Connection_RSL)
+  end
+end
+
+
+function BPMHLF(data)
+  print('tapBPM(', data, ')')
+  if 0 < data then
+    sendOSC({OSCPath_RSL_BPMHLF, {{tag = 'i', value = 1}}}, OSC_Connection_RSL)
+  else
+    sendOSC({OSCPath_RSL_BPMHLF, {{tag = 'i', value = 0}}}, OSC_Connection_RSL)
+  end
+end
+
 
 function toggleAUTOBPM(data)
   print('toggleAUTOBPM(', data, ')')
