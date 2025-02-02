@@ -674,7 +674,7 @@ function BPMDBL(data)
   if 0 < data then
     sendOSC({OSCPath_RSL_BPMDBL, {{tag = 'i', value = 1}}}, OSC_Connection_RSL)
   else
-    sendOSC({OSCPath_RSL_BPMDBL, {{tag = 'i', value = 0}}}, OSC_Connection_RSL)
+--    sendOSC({OSCPath_RSL_BPMDBL, {{tag = 'i', value = 0}}}, OSC_Connection_RSL)
   end
 end
 
@@ -684,7 +684,7 @@ function BPMHLF(data)
   if 0 < data then
     sendOSC({OSCPath_RSL_BPMHLF, {{tag = 'i', value = 1}}}, OSC_Connection_RSL)
   else
-    sendOSC({OSCPath_RSL_BPMHLF, {{tag = 'i', value = 0}}}, OSC_Connection_RSL)
+--    sendOSC({OSCPath_RSL_BPMHLF, {{tag = 'i', value = 0}}}, OSC_Connection_RSL)
   end
 end
 
