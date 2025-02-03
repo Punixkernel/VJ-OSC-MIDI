@@ -41,7 +41,16 @@ MIDIKEY_MSKTYP_LOGO = {176,51}
 MIDIKEY_MSKGAIN_L = {176,19}
 MIDIKEY_MSKGAIN_R = {176,20}
 
+MIDIKEY_SIDEGAIN_DECK3 = {176,3}
+MIDIKEY_SIDEGAIN_DECK4 = {176,4}
 
+MIDIKEY_SIDEMASKGAIN = {176,17}
+MIDIKEY_SIDEMASKSEL_MASTER1 = {176,65}
+MIDIKEY_SIDEMASKSEL_MASTER2 = {176,66}
+MIDIKEY_SIDEMASKSEL_DECK1 = {176,33}
+MIDIKEY_SIDEMASKSEL_DECK2 = {176,34}
+MIDIKEY_SIDEMASKSEL_DECK3 = {176,49}
+MIDIKEY_SIDEMASKSEL_DECK4 = {176,50}
 
 
 function onReceiveOSC(message, connections)
@@ -132,6 +141,28 @@ function onReceiveMIDI(message, connections)
     MSKGAIN_L(recvMIDI_value)
   elseif ( (MIDIKEY_MSKGAIN_R[1] == message[1]) and (MIDIKEY_MSKGAIN_R[2] == message[2])) then
     MSKGAIN_R(recvMIDI_value)
+    
+  elseif ( (MIDIKEY_SIDEGAIN_DECK3[1] == message[1]) and (MIDIKEY_SIDEGAIN_DECK3[2] == message[2])) then
+    SIDEGAIN_DECK3(recvMIDI_value) 
+  elseif ( (MIDIKEY_SIDEGAIN_DECK4[1] == message[1]) and (MIDIKEY_SIDEGAIN_DECK4[2] == message[2])) then
+    SIDEGAIN_DECK4(recvMIDI_value)
+    
+  elseif ( (MIDIKEY_SIDEMASKGAIN[1] == message[1]) and (MIDIKEY_SIDEMASKGAIN[2] == message[2])) then
+    SIDEMASKGAIN(recvMIDI_value)
+  elseif ( (MIDIKEY_SIDEMASKSEL_MASTER1[1] == message[1]) and (MIDIKEY_SIDEMASKSEL_MASTER1[2] == message[2])) then
+    SIDEMASKSEL_MASTER(recvMIDI_value)
+  elseif ( (MIDIKEY_SIDEMASKSEL_MASTER2[1] == message[1]) and (MIDIKEY_SIDEMASKSEL_MASTER2[2] == message[2])) then
+    SIDEMASKSEL_MASTER(recvMIDI_value)
+  elseif ( (MIDIKEY_SIDEMASKSEL_DECK1[1] == message[1]) and (MIDIKEY_SIDEMASKSEL_DECK1[2] == message[2])) then
+    SIDEMASKSEL_DECK1(recvMIDI_value)
+  elseif ( (MIDIKEY_SIDEMASKSEL_DECK2[1] == message[1]) and (MIDIKEY_SIDEMASKSEL_DECK2[2] == message[2])) then
+    SIDEMASKSEL_DECK2(recvMIDI_value)
+  elseif ( (MIDIKEY_SIDEMASKSEL_DECK3[1] == message[1]) and (MIDIKEY_SIDEMASKSEL_DECK3[2] == message[2])) then
+    SIDEMASKSEL_DECK3(recvMIDI_value)    
+  elseif ( (MIDIKEY_SIDEMASKSEL_DECK4[1] == message[1]) and (MIDIKEY_SIDEMASKSEL_DECK4[2] == message[2])) then
+    SIDEMASKSEL_DECK4(recvMIDI_value)    
+    
+    
 
   else
     --
@@ -139,6 +170,106 @@ function onReceiveMIDI(message, connections)
 
 
 end
+
+
+
+function SIDEMASKSEL_DECK4(data)
+  print('SIDEMASKSEL_DECK4(', data, ')')
+  if 0 < data then
+    gain = data / 127
+    sendOSC({'/composition/layers/109/clips/5/connect', {{tag = 'i', value = 1}}}, OSC_Connection_RSL)
+  else
+    --
+  end
+end
+
+
+
+function SIDEMASKSEL_DECK3(data)
+  print('SIDEMASKSEL_DECK3(', data, ')')
+  if 0 < data then
+    gain = data / 127
+    sendOSC({'/composition/layers/109/clips/4/connect', {{tag = 'i', value = 1}}}, OSC_Connection_RSL)
+  else
+    --
+  end
+end
+
+
+
+function SIDEMASKSEL_DECK2(data)
+  print('SIDEMASKSEL_DECK2(', data, ')')
+  if 0 < data then
+    gain = data / 127
+    sendOSC({'/composition/layers/109/clips/3/connect', {{tag = 'i', value = 1}}}, OSC_Connection_RSL)
+  else
+    --
+  end
+end
+
+
+
+function SIDEMASKSEL_DECK1(data)
+  print('SIDEMASKSEL_DECK1(', data, ')')
+  if 0 < data then
+    gain = data / 127
+    sendOSC({'/composition/layers/109/clips/2/connect', {{tag = 'i', value = 1}}}, OSC_Connection_RSL)
+  else
+    --
+  end
+end
+
+
+
+function SIDEMASKSEL_MASTER(data)
+  print('SIDEMASKSEL_MASTER(', data, ')')
+  if 0 < data then
+    gain = data / 127
+    sendOSC({'/composition/layers/109/clips/1/connect', {{tag = 'i', value = 1}}}, OSC_Connection_RSL)
+  else
+    --
+  end
+end
+
+
+
+function SIDEMASKGAIN(data)
+  print('SIDEMASKGAIN(', data, ')')
+  if 0 < data then
+    gain = data / 127
+    sendOSC({'/composition/layers/100/video/opacity', {{tag = 'f', value = gain}}}, OSC_Connection_RSL)
+    sendOSC({'/composition/layers/100/master', {{tag = 'f', value = gain}}}, OSC_Connection_RSL)
+  else
+    --
+  end
+end
+
+
+
+function SIDEGAIN_DECK3(data)
+  print('SIDEGAIN_DECK3(', data, ')')
+  if 0 < data then
+    gain = data / 127
+    sendOSC({'/composition/layers/98/video/opacity', {{tag = 'f', value = gain}}}, OSC_Connection_RSL)
+    sendOSC({'/composition/layers/98/master', {{tag = 'f', value = gain}}}, OSC_Connection_RSL)
+  else
+    --
+  end
+end
+
+
+
+function SIDEGAIN_DECK4(data)
+  print('SIDEGAIN_DECK4(', data, ')')
+  if 0 < data then
+    gain = data / 127
+    sendOSC({'/composition/layers/99/video/opacity', {{tag = 'f', value = gain}}}, OSC_Connection_RSL)
+    sendOSC({'/composition/layers/99/master', {{tag = 'f', value = gain}}}, OSC_Connection_RSL)
+  else
+    --
+  end
+end
+
 
 
 function MSKGAIN_R(data)
