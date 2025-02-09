@@ -43,8 +43,11 @@ MIDIKEY_MSKGAIN_R = {176,20}
 MIDIKEY_MSKGAIN_3 = {176,18}
 MIDIKEY_MSKGAIN_4 = {176,21}
 
-MIDIKEY_SIDEGAIN_DECK3 = {176,3}
-MIDIKEY_SIDEGAIN_DECK4 = {176,4}
+MIDIKEY_SIDEGAIN_DECK3 = {176,2}
+MIDIKEY_SIDEGAIN_DECK4 = {176,5}
+
+MIDIKEY_MAINGAIN_DECK3 = {176,3}
+MIDIKEY_MAINGAIN_DECK4 = {176,4}
 
 MIDIKEY_SIDEMASKGAIN = {176,17}
 MIDIKEY_SIDEMASKSEL_MASTER1 = {176,65}
@@ -53,6 +56,8 @@ MIDIKEY_SIDEMASKSEL_DECK1 = {176,33}
 MIDIKEY_SIDEMASKSEL_DECK2 = {176,34}
 MIDIKEY_SIDEMASKSEL_DECK3 = {176,49}
 MIDIKEY_SIDEMASKSEL_DECK4 = {176,50}
+
+MIDIKEY_VJIN = {176,45}
 
 
 function onReceiveOSC(message, connections)
@@ -152,6 +157,11 @@ function onReceiveMIDI(message, connections)
     SIDEGAIN_DECK3(recvMIDI_value) 
   elseif ( (MIDIKEY_SIDEGAIN_DECK4[1] == message[1]) and (MIDIKEY_SIDEGAIN_DECK4[2] == message[2])) then
     SIDEGAIN_DECK4(recvMIDI_value)
+  elseif ( (MIDIKEY_MAINGAIN_DECK3[1] == message[1]) and (MIDIKEY_MAINGAIN_DECK3[2] == message[2])) then
+    MAINGAIN_DECK3(recvMIDI_value) 
+  elseif ( (MIDIKEY_MAINGAIN_DECK4[1] == message[1]) and (MIDIKEY_MAINGAIN_DECK4[2] == message[2])) then
+    MAINGAIN_DECK4(recvMIDI_value)
+    
     
   elseif ( (MIDIKEY_SIDEMASKGAIN[1] == message[1]) and (MIDIKEY_SIDEMASKGAIN[2] == message[2])) then
     SIDEMASKGAIN(recvMIDI_value)
@@ -168,6 +178,8 @@ function onReceiveMIDI(message, connections)
   elseif ( (MIDIKEY_SIDEMASKSEL_DECK4[1] == message[1]) and (MIDIKEY_SIDEMASKSEL_DECK4[2] == message[2])) then
     SIDEMASKSEL_DECK4(recvMIDI_value)    
     
+  elseif ( (MIDIKEY_VJIN[1] == message[1]) and (MIDIKEY_VJIN[2] == message[2])) then
+    VJIN(recvMIDI_value)   
     
 
   else
@@ -175,6 +187,17 @@ function onReceiveMIDI(message, connections)
   end
 
 
+end
+
+
+function VJIN(data)
+  print('VJIN(', data, ')')
+  if 0 < data then
+    gain = data / 127
+    sendOSC({'/composition/layers/8/clips/11/connect', {{tag = 'i', value = 1}}}, OSC_Connection_RSL)
+  else
+    --
+  end
 end
 
 
@@ -251,13 +274,40 @@ function SIDEMASKGAIN(data)
 end
 
 
+function MAINGAIN_DECK3(data)
+  print('SIDEGAIN_DECK3(', data, ')')
+  if 0 < data then
+    gain = data / 127
+    sendOSC({'/composition/layers/126/video/opacity', {{tag = 'f', value = gain}}}, OSC_Connection_RSL)
+    sendOSC({'/composition/layers/127/video/opacity', {{tag = 'f', value = gain}}}, OSC_Connection_RSL)
+--    sendOSC({'/composition/layers/106/master', {{tag = 'f', value = gain}}}, OSC_Connection_RSL)
+  else
+    --
+  end
+end
+
+
+
+function MAINGAIN_DECK4(data)
+  print('SIDEGAIN_DECK4(', data, ')')
+  if 0 < data then
+    gain = data / 127
+    sendOSC({'/composition/layers/128/video/opacity', {{tag = 'f', value = gain}}}, OSC_Connection_RSL)
+    sendOSC({'/composition/layers/129/video/opacity', {{tag = 'f', value = gain}}}, OSC_Connection_RSL)
+--    sendOSC({'/composition/layers/107/master', {{tag = 'f', value = gain}}}, OSC_Connection_RSL)
+  else
+    --
+  end
+end
+
 
 function SIDEGAIN_DECK3(data)
   print('SIDEGAIN_DECK3(', data, ')')
   if 0 < data then
     gain = data / 127
     sendOSC({'/composition/layers/106/video/opacity', {{tag = 'f', value = gain}}}, OSC_Connection_RSL)
-    sendOSC({'/composition/layers/106/master', {{tag = 'f', value = gain}}}, OSC_Connection_RSL)
+    sendOSC({'/composition/layers/107/video/opacity', {{tag = 'f', value = gain}}}, OSC_Connection_RSL)
+--    sendOSC({'/composition/layers/106/master', {{tag = 'f', value = gain}}}, OSC_Connection_RSL)
   else
     --
   end
@@ -269,8 +319,9 @@ function SIDEGAIN_DECK4(data)
   print('SIDEGAIN_DECK4(', data, ')')
   if 0 < data then
     gain = data / 127
-    sendOSC({'/composition/layers/107/video/opacity', {{tag = 'f', value = gain}}}, OSC_Connection_RSL)
-    sendOSC({'/composition/layers/107/master', {{tag = 'f', value = gain}}}, OSC_Connection_RSL)
+    sendOSC({'/composition/layers/109/video/opacity', {{tag = 'f', value = gain}}}, OSC_Connection_RSL)
+    sendOSC({'/composition/layers/108/video/opacity', {{tag = 'f', value = gain}}}, OSC_Connection_RSL)
+--    sendOSC({'/composition/layers/107/master', {{tag = 'f', value = gain}}}, OSC_Connection_RSL)
   else
     --
   end
